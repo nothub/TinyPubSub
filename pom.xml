@@ -6,11 +6,12 @@
 
   <groupId>cc.neckbeard</groupId>
   <artifactId>TinyEventBus</artifactId>
-  <version>3.0.0</version>
+  <version>3.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>${project.artifactId}</name>
-  <description>A tiny and fast pubsub implementation with subscriber priorities and event canceling for Java 8 to 16.</description>
+  <description>A tiny and fast pubsub implementation with subscriber priorities and event canceling for Java 8 to 16.
+  </description>
   <url>https://github.com/nothub/TinyEventBus</url>
 
   <licenses>
@@ -36,7 +37,7 @@
   </scm>
 
   <properties>
-    <java.version>16</java.version>
+    <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,6 +46,27 @@
   <build>
     <defaultGoal>clean test</defaultGoal>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version>
+        <executions>
+          <execution>
+            <id>enforce-no-snapshot-dependencies</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireReleaseDeps>
+                  <message>No snapshot dependencies allowed!</message>
+                </requireReleaseDeps>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -67,6 +89,27 @@
       <id>release</id>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>3.0.0-M3</version>
+            <executions>
+              <execution>
+                <id>enforce-no-snapshot-release</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireReleaseVersion>
+                      <message>No snapshot release allowed!</message>
+                    </requireReleaseVersion>
+                  </rules>
+                  <fail>true</fail>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
