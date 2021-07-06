@@ -27,6 +27,14 @@ public class Bus {
 
     private final Map<Class<?>, ConcurrentSkipListSet<Sub<?>>> subs = new ConcurrentHashMap<>();
 
+    private static final AccessProbe accessProbe; static {
+        if (System.getProperty("java.version").startsWith("1.")) {
+            accessProbe = new Jdk8Probe();
+        } else {
+            accessProbe = new Jdk9Probe();
+        }
+    }
+
     @NotNull
     private static Set<Sub<?>> getSubFields(Object parent) {
         return Arrays.stream(parent.getClass().getDeclaredFields())
